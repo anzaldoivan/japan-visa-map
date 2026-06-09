@@ -1,0 +1,41 @@
+version: 2
+updates:
+  # Vite/React app
+  - package-ecosystem: "npm"
+    directory: "/app"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - "dependencies"
+      - "app"
+
+  # react-simple-maps library (root)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    labels:
+      - "dependencies"
+      - "library"
+
+  # Keep the CI workflow's actions current
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "ci"
