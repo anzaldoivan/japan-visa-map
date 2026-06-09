@@ -1,81 +1,56 @@
-<img src="https://img.shields.io/bundlephobia/minzip/react-simple-maps?color=%2328cb95&label=gzip" />
+# Japan Visa Issuance Global Map 🇯🇵🌍
 
-# react-simple-maps
+An interactive, open-source choropleth map built with React that visualizes the distribution of Japanese visas issued worldwide. This project highlights countries based on the volume of visas granted, providing a clear geographic overview of migration and travel data.
 
-Create beautiful SVG maps in react with d3-geo and topojson using a declarative api.
+**Live Demo:** [Insert GitHub Pages URL here]
 
-Read the [docs](https://www.react-simple-maps.io/docs/getting-started/), or check out the [examples](https://www.react-simple-maps.io/examples/).
+## 🛠️ Tech Stack
 
-### Why
+This project is built as a lightweight, static web application to ensure high performance and easy hosting on GitHub Pages:
 
-`React-simple-maps` aims to make working with svg maps in react easier. It handles tasks such as panning, zooming and simple rendering optimization, and takes advantage of parts of [d3-geo](https://github.com/d3/d3-geo) and topojson-client instead of relying on the entire d3 library.
+- **[React](https://reactjs.org/)**: UI framework.
+- **[React Simple Maps](https://www.react-simple-maps.io/)**: An SVG-based mapping library built on top of `d3-geo` and TopoJSON. It was chosen because it does not require an API key, avoids complex WebGL/tile-server overhead, and is perfect for country-level highlighting.
+- **[D3.js (d3-scale / d3-fetch)](https://d3js.org/)**: Used for fetching the CSV data and generating the color scales for the choropleth map.
+- **[React Tooltip](https://react-tooltip.com/)**: Provides hover interactions to display exact visa counts per country.
 
-Since `react-simple-maps` leaves DOM work to react, it can also easily be used with other libraries, such as [react-spring](https://github.com/react-spring/react-spring) and [react-annotation](https://github.com/susielu/react-annotation/).
+## 🚀 Getting Started
 
-### Install
+### Prerequisites
 
-To install `react-simple-maps`
+- Node.js (v16 or higher)
+- npm or yarn
 
-```bash
-$ npm install react-simple-maps
-```
+### Installation
 
-...or if you use yarn:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/anzaldoivan/japan-visa-map.git
+   cd japan-visa-map
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm start
+   ```
 
-```bash
-$ yarn add react-simple-maps
-```
+## 📊 Data Processing
 
-### Usage
+The map relies on standard TopoJSON for geographical boundaries. The visa data is mapped to these boundaries using ISO 3166-1 alpha-3 country codes.
 
-`React-simple-maps` exposes a set of components that can be combined to create svg maps with markers and annotations. In order to render a map you have to provide a reference to a valid topojson file. You can find example topojson files on [here](https://github.com/topojson/world-atlas) or [here](https://github.com/deldersveld/topojson). To learn how to make your own topojson maps from shapefiles, please read ["How to convert and prepare TopoJSON files for interactive mapping with d3"](https://hackernoon.com/how-to-convert-and-prepare-topojson-files-for-interactive-mapping-with-d3-499cf0ced5f) on medium.
+When the component mounts, the app parses a static CSV file containing the visa counts, calculates a sequential color scale using `d3-scale`, and applies the appropriate color fill to each `<Geographies>` component based on the data threshold.
 
-```jsx
-import React from "react";
-import ReactDOM from "react-dom";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+## ⚖️ Data Source & Disclaimer
 
-// url to a valid topojson file
-const geoUrl =
-  "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
+**Source:** [Portal Site of Official Statistics of Japan (e-Stat)](https://www.e-stat.go.jp/)
 
-const App = () => {
-  return (
-    <div>
-      <ComposableMap>
-        <Geographies geography={geoUrl}>
-          {({ geographies }) =>
-            geographies.map((geo) => (
-              <Geography key={geo.rsmKey} geography={geo} />
-            ))
-          }
-        </Geographies>
-      </ComposableMap>
-    </div>
-  );
-};
+The visa issuance statistics used in this visualization are sourced from the e-Stat database (Dataset ID: `0004019020`).
 
-document.addEventListener("DOMContentLoaded", () => {
-  ReactDOM.render(<App />, document.getElementById("app"));
-});
-```
+- **Modification Notice:** The original dataset has been edited, filtered, and formatted into a structured CSV by the repository owner (Ivan Anzaldo) to integrate with the mapping application.
+- **Disclaimer:** This repository and the accompanying web application are created for research and portfolio purposes. It is an independent project and is **not** affiliated with, endorsed by, or representative of the Government of Japan, the Ministry of Justice, or the Immigration Services Agency.
 
-Check out the [live example](https://codesandbox.io/s/basic-map-wvlol)
+## 📄 License
 
-The above will render a world map using the [equal earth projection](https://observablehq.com/@d3/equal-earth). You can read more about this projection on [Shaded Relief](http://shadedrelief.com/ee_proj/) and on [Wikipedia](https://en.wikipedia.org/wiki/Equal_Earth_projection).
-
-For other examples and components, check out the [documentation](https://www.react-simple-maps.io/docs/getting-started).
-
-### Map files
-
-React-simple-maps does not restrict you to one specific map and relies on custom map files that you can modify in any way necessary for the project. This means that you can visualise countries, regions, and continents in various resolutions, as long as they can be represented using geojson/topojson.
-
-In order for this to work properly, you will however need to provide these valid map files to react-simple-maps yourself. Luckily, there are decent sources for map files on github and elsewhere. Here are some you can check out:
-
-* [Natural Earth](https://github.com/nvkelso/natural-earth-vector)
-* [Topojson maps by @deldersveld](https://github.com/deldersveld/topojson)
-* [Topojson world atlas](https://github.com/topojson/world-atlas)
-
-### License
-
-MIT licensed. Copyright (c) Richard Zimerman 2017. See [LICENSE.md](https://github.com/zcreativelabs/react-simple-maps/blob/master/LICENSE) for more details.
+This project's source code is open-source and available under the [MIT License](LICENSE). The statistical data used is governed by the e-Stat [Terms of Use](https://www.e-stat.go.jp/en/terms-of-use) (Compatible with CC-BY).
