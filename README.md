@@ -2,7 +2,7 @@
 
 An interactive, open-source choropleth map built with React that visualizes the distribution of Japanese visas issued worldwide. This project highlights countries based on the volume of visas granted, providing a clear geographic overview of migration and travel data.
 
-**Live Demo:** [Insert GitHub Pages URL here]
+**Live Demo:** [GithubPages Link](https://anzaldoivan.github.io/japan-visa-map/)
 
 ## 🛠️ Tech Stack
 
