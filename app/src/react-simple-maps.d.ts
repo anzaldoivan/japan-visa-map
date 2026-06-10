@@ -18,6 +18,8 @@ declare module "react-simple-maps" {
 
   export const ComposableMap: FC<{
     projectionConfig?: { scale?: number; center?: [number, number] }
+    width?: number
+    height?: number
     style?: CSSProperties
     children?: ReactNode
   }>
