@@ -34,7 +34,7 @@ const NO_DATA_FILL = "url(#no-data-hatch)"
 const NO_DATA_SWATCH = "repeating-linear-gradient(45deg, #151a24 0 3px, #2a3242 3px 5px)"
 const ACCENT = "#f6b04e"
 const COUNTRY_STROKE = "#0a0d13"
-const INITIAL_POSITION = { coordinates: [15, 10] as [number, number], zoom: 1 }
+const INITIAL_POSITION = { coordinates: [0, 0] as [number, number], zoom: 1 }
 
 /**
  * For discrete choropleth maps, hand-tuned ColorBrewer palettes (like schemeYlGn)
@@ -281,7 +281,9 @@ export default function App() {
       {/* ── Map ── */}
       <div className="map-area">
         <ComposableMap
-          projectionConfig={{ scale: 155, center: [15, 10] }}
+          width={800}
+          height={450}
+          projectionConfig={{ scale: 155, center: [0, 0] }}
           style={{ width: "100%", height: "100%" }}
         >
           <defs>
