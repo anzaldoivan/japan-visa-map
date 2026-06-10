@@ -7,7 +7,7 @@ import {
   ZoomableGroup,
 } from "react-simple-maps"
 import { scaleThreshold } from "d3-scale"
-import { interpolateInferno } from "d3-scale-chromatic"
+import { interpolateYlGn, schemeYlGn } from "d3-scale-chromatic"
 import countries from "i18n-iso-countries"
 import enCountries from "i18n-iso-countries/langs/en.json"
 import jaCountries from "i18n-iso-countries/langs/ja.json"
@@ -36,12 +36,21 @@ const ACCENT = "#f6b04e"
 const COUNTRY_STROKE = "#0a0d13"
 const INITIAL_POSITION = { coordinates: [15, 10] as [number, number], zoom: 1 }
 
-/** Sample n discrete classes from inferno, skipping the near-black low end
- *  so the lowest bin still reads against the dark background. */
-const binColors = (n: number): string[] =>
-  Array.from({ length: n }, (_, i) =>
-    interpolateInferno(n === 1 ? 0.6 : 0.22 + (0.74 * i) / (n - 1))
+/**
+ * For discrete choropleth maps, hand-tuned ColorBrewer palettes (like schemeYlGn)
+ * provide much better perceptual distinction between adjacent bins than mathematically
+ * sampling a continuous gradient.
+ */
+const binColors = (n: number): string[] => {
+  if (n >= 3 && n <= 9) {
+    // Return a copy of the discrete color array provided by d3-scale-chromatic
+    return [...schemeYlGn[n]]
+  }
+  // Fallback for very small or very large n
+  return Array.from({ length: n }, (_, i) =>
+    interpolateYlGn(0.1 + (0.8 * i) / (n - 1))
   )
+}
 
 const VISA_GROUP: Record<string, string> = {
   教授: "work", 芸術: "work", 宗教: "work", 報道: "work",
