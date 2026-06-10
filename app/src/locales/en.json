@@ -31,6 +31,10 @@
     "status": "Status-based residence",
     "other": "Other"
   },
+  "countries": {
+    "CN": "China",
+    "TW": "Taiwan"
+  },
   "visaTypes": {
     "教授": "Professor",
     "芸術": "Arts",

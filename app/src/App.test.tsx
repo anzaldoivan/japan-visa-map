@@ -2,9 +2,21 @@ import { describe, it, expect, vi } from "vitest"
 import { render, screen, fireEvent } from "@testing-library/react"
 import { Tooltip, Legend, DetailPanel } from "./App"
 import { VisaEntry } from "./utils"
+import enLocale from "./locales/en.json"
+import jaLocale from "./locales/ja.json"
 
-// Stub translation functions — return the key so assertions stay locale-independent
-const t = (key: string) => key
+// Stub translation — pass through everything as the key except countries.* overrides,
+// which are read directly from the locale files to keep the test in sync with production.
+const makeT = (lang: "en" | "ja") => (key: string): string => {
+  if (key.startsWith("countries.")) {
+    const alpha2 = key.slice("countries.".length)
+    const locale = lang === "ja" ? jaLocale : enLocale
+    return (locale as Record<string, Record<string, string>>).countries?.[alpha2] ?? key
+  }
+  return key
+}
+const t = makeT("en")
+const tJa = makeT("ja")
 const tVisa = (key: string) => key
 
 const CHINA_ENTRY: VisaEntry = {
@@ -28,7 +40,7 @@ describe("Tooltip", () => {
         tVisa={tVisa} t={t} language="en"
       />
     )
-    expect(screen.getByText("People's Republic of China")).toBeInTheDocument()
+    expect(screen.getByText("China")).toBeInTheDocument()
   })
 
   it("renders the Japanese country name when language is ja", () => {
@@ -39,10 +51,10 @@ describe("Tooltip", () => {
         entry={CHINA_ENTRY}
         visaType="__total__"
         visaLabel="Total"
-        tVisa={tVisa} t={t} language="ja"
+        tVisa={tVisa} t={tJa} language="ja"
       />
     )
-    expect(screen.getByText("中華人民共和国")).toBeInTheDocument()
+    expect(screen.getByText("中国")).toBeInTheDocument()
   })
 
   it("falls back to the alpha-2 code when the country is not in the registry", () => {
@@ -205,7 +217,7 @@ describe("DetailPanel", () => {
 
   it("renders the country name and formatted period", () => {
     renderPanel()
-    expect(screen.getByText("People's Republic of China")).toBeInTheDocument()
+    expect(screen.getByText("China")).toBeInTheDocument()
     expect(screen.getByText("June 2025")).toBeInTheDocument()
   })
 

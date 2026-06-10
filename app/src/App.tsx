@@ -36,10 +36,10 @@ const ACCENT = "#f6b04e"
 const COUNTRY_STROKE = "#0a0d13"
 const INITIAL_POSITION = { coordinates: [0, 0] as [number, number], zoom: 1 }
 
-const getCountryName = (alpha2: string, language: string) => {
-  if (alpha2 === "CN") return language === "ja" ? "中国" : "China"
-  if (alpha2 === "TW") return language === "ja" ? "台湾" : "Taiwan"
-  return countries.getName(alpha2, language) || alpha2
+const getCountryName = (alpha2: string, language: string, t: (key: string) => string): string => {
+  const override = t(`countries.${alpha2}`)
+  if (override !== `countries.${alpha2}`) return override
+  return countries.getName(alpha2, language) ?? alpha2
 }
 
 /**
@@ -317,7 +317,7 @@ export default function App() {
                   const entry = alpha2 ? periodData[alpha2] : undefined
                   const hasData = Boolean(alpha2 && entry)
                   const name = alpha2
-                    ? getCountryName(alpha2, language)
+                    ? getCountryName(alpha2, language, t)
                     : undefined
                   const isSelected = alpha2 !== undefined && alpha2 === selected
                   return (
@@ -444,7 +444,7 @@ interface TooltipProps {
 }
 
 export function Tooltip({ x, y, alpha2, entry, visaType, visaLabel, tVisa, t, language }: TooltipProps) {
-  const countryName = getCountryName(alpha2, language)
+  const countryName = getCountryName(alpha2, language, t)
   const total = entry.total?.toLocaleString() ?? "—"
   const specific = visaType !== TOTAL_KEY
     ? (entry[visaType] ?? 0).toLocaleString()
@@ -506,7 +506,7 @@ interface DetailPanelProps {
 export function DetailPanel({
   alpha2, entry, period, visaType, visaLabel, globalTotal, tVisa, t, language, onClose,
 }: DetailPanelProps) {
-  const countryName = getCountryName(alpha2, language)
+  const countryName = getCountryName(alpha2, language, t)
   const value = getEntryValue(entry, visaType)
   const share = globalTotal > 0 ? (value / globalTotal) * 100 : 0
 
